@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using NAudio.Wave;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.ComponentModel.Design;
 
 
 
@@ -14,6 +17,27 @@ class TimeListener
             "23:43:00",
             "13:47:00"
         };
+
+    public void addTime()
+    {
+        Console.WriteLine("Enter a new time to be alerted:");
+        String time = Console.ReadLine();
+        String timepattern = @"^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
+        Regex regex = new Regex(timepattern);
+        if (!regex.IsMatch(time))
+        {
+            Console.WriteLine("Invalid time format. Please use HH:mm:ss.");
+            return;
+        }
+        else
+        {
+            if (!times.Contains(time))
+            {
+                times.Add(time);
+            }
+        }
+
+    }
 
 }   
 class Program
@@ -44,6 +68,7 @@ class Program
         string filePath = @"..\..\..\recording\nabeel2019.mp3";
         
         TimeListener timeListener = new TimeListener();
+        timeListener.addTime();
         List<string> times = timeListener.times;
 
         while (true)
